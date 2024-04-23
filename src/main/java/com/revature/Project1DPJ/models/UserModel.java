@@ -1,59 +1,40 @@
 package com.revature.Project1DPJ.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "/Users")
+@Table(name = "/users")
 public class UserModel {
+
     @Id
-    private int id;
-    @Column(nullable = false)
+    @GeneratedValue
     private int userId;
     @Column(nullable = false)
-    private String userName;
+    private String firstName ;
     @Column(nullable = false)
-    private String password;
+    private String lastName ;
     @Column(nullable = false)
-    private String email;
+    private String email ;
     @Column(nullable = false)
-    private String phone;
-    @Column(nullable = false)
-    private String address;
-    @Column(nullable = false)
-    private String gender;
-    @Column(nullable = false)
-    private String birthday;
-    private String city;
-    private String province;
-    private String country;
+    private String password ;
+
 
     public UserModel() {
     }
 
-    public UserModel(String province, String country, String city, String birthday, String gender, String address, String phone, String email, String password, String userName, int userId, int id) {
-        this.province = province;
-        this.country = country;
-        this.city = city;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.address = address;
-        this.phone = phone;
+    public UserModel(String lastName, String email, String firstName, String password) {
+        this.lastName = lastName;
         this.email = email;
+        this.firstName = firstName;
         this.password = password;
-        this.userName = userName;
-        this.userId = userId;
-        this.id = id;
     }
 
-    public int getId() {
-        return id;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public int getUserId() {
@@ -64,20 +45,12 @@ public class UserModel {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -88,59 +61,11 @@ public class UserModel {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
