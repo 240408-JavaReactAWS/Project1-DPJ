@@ -15,15 +15,15 @@ public class UserController {
         this.userServices = userServices;
     }
 
-    @PostMapping(path = "/users")
+    @PostMapping
     public String addUser(@RequestBody UserModel user) {
         return userServices.saveUser(user);
 
     }
 
-    @GetMapping("/{id}")
-    public UserModel getUserById(@RequestParam int id) {
-        return userServices.getUserById(id);
+    @GetMapping("/{userId}")
+    public UserModel getUserById(@PathVariable int userId) {
+        return userServices.getUserById(userId);
     }
 
 

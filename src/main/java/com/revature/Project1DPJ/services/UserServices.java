@@ -14,12 +14,12 @@ public class UserServices {
         this.userRepository = userRepository;
     }
 
-    public UserModel getUserById(int id) {
-        return userRepository.findUserById(id);
+    public UserModel getUserById(int useId) {
+        return userRepository.findUserById(useId);
 
     }
-    public UserModel getUserByUsername(String username) {
-        return userRepository.findUserByFirstname(username);
+    public UserModel getUserByUsername(String firstName) {
+        return userRepository.findUserByFirstName(firstName);
     }
 
     public String saveUser(UserModel user){

@@ -3,12 +3,12 @@ package com.revature.Project1DPJ.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "/users")
+@Table(name = "users")
 public class UserModel {
 
     @Id
-    @GeneratedValue
-    private int userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(nullable = false)
     private String firstName ;
     @Column(nullable = false)
@@ -38,11 +38,11 @@ public class UserModel {
     }
 
     public int getUserId() {
-        return userId;
+        return id;
     }
 
     public void setUserId(int userId) {
-        this.userId = userId;
+        this.id = userId;
     }
 
     public String getLastName() {
