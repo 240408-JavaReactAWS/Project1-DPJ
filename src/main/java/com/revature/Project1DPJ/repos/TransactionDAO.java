@@ -1,4 +1,8 @@
 package com.revature.Project1DPJ.repos;
 
-public interface TransactionDAO {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TransactionDAO{
+
 }
