@@ -19,7 +19,7 @@ public class UserServices {
 
     }
     public UserModel getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+        return userRepository.findUserByFirstname(username);
     }
 
     public String saveUser(UserModel user){
