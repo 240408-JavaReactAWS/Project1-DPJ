@@ -2,6 +2,7 @@ package com.revature.Project1DPJ.services;
 
 import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.User;
+import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.repos.AccountDAO;
 import com.revature.Project1DPJ.repos.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +52,9 @@ public class AccountService {
         Optional<Account> optionalAccount = this.accountDAO.findById(id);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
-            int userId = account.getAccountOwnerId();
+            UserModel userId = account.getAccountOwner();
 
-            Optional<User> optionalUser = this.userDAO.findById(userId);
+            Optional<User> optionalUser = this.userDAO.findById(id);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 user.setPassword(password);

@@ -20,21 +20,21 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id_fk")
-    //@Column(name = "account_Owner_id")
-    private int accountOwnerId;
+    @Column(name = "account_Owner_id")
+    private UserModel accountOwnerId;
 
     @Column
     private double balance;
 
 
-    public Account(String accountType, String accountNumber, int accountOwnerId, double balance) {
+    public Account(String accountType, String accountNumber, UserModel accountOwnerId, double balance) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.accountOwnerId = accountOwnerId;
         this.balance = balance;
     }
 
-    public Account(int id, String accountType, String accountNumber, int accountOwnerId, double balance) {
+    public Account(int id, String accountType, String accountNumber, UserModel accountOwnerId, double balance) {
         this.id = id;
         this.accountType = accountType;
         this.accountNumber = accountNumber;
@@ -67,11 +67,11 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public int getAccountOwnerId() {
+    public UserModel getAccountOwner() {
         return accountOwnerId;
     }
 
-    public void setAccountOwnerId(int accountOwnerId) {
+    public void setAccountOwnerId(UserModel accountOwnerId) {
         this.accountOwnerId = accountOwnerId;
     }
 

@@ -5,6 +5,8 @@ import com.revature.Project1DPJ.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServices {
     private UserRepository userRepository;
@@ -18,16 +20,18 @@ public class UserServices {
         return userRepository.findUserById(useId);
 
     }
+
     public UserModel getUserByUsername(String firstName) {
         return userRepository.findUserByFirstName(firstName);
     }
 
-    public String saveUser(UserModel user){
-        if(user != null){
-            userRepository.save(user);
-            return "succesfully added";
-        }
-        return "failed to save user";
+    public UserModel saveUser(UserModel user) {
 
+            return userRepository.save(user);
+
+    }
+
+    public List<UserModel> getAllUsers(){
+        return userRepository.findAll();
     }
 }
