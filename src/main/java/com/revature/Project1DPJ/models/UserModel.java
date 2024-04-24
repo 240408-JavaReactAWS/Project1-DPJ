@@ -2,6 +2,8 @@ package com.revature.Project1DPJ.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class UserModel {
@@ -17,15 +19,23 @@ public class UserModel {
     private String email ;
     @Column(nullable = false)
     private String password ;
+    private String role;
+    private boolean userStatus;
+
+    @OneToMany
+    private List<Account> accounts;
+
 
 
     public UserModel() {
     }
 
-    public UserModel(String lastName, String email, String firstName, String password) {
+    public UserModel(String firstName, String lastName, String email, boolean userStatus, String role, String password) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.firstName = firstName;
+        this.userStatus = userStatus;
+        this.role = role;
         this.password = password;
     }
 
@@ -67,5 +77,20 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(boolean userStatus) {
+        this.userStatus = userStatus;
     }
 }
