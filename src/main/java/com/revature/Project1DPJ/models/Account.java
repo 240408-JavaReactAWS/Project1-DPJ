@@ -25,6 +25,7 @@ public class Account {
     private int accountNumber;
 
     @ManyToOne()
+    @JsonBackReference
     @JoinColumn(name="account_owner")
     private UserModel accountOwner;
 
@@ -42,6 +43,14 @@ public class Account {
     public Account() {
     }
 
+    public Account(AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus) {
+        this.accountType = accountType;
+        this.accountNumber = accountNumber;
+        this.accountOwner = accountOwner;
+        this.balance = balance;
+        this.accountStatus = accountStatus;
+    }
+
     public Account(AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus, List<Transaction> accountTransactions) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
@@ -49,14 +58,6 @@ public class Account {
         this.balance = balance;
         this.accountStatus = accountStatus;
         this.accountTransactions = accountTransactions;
-    }
-
-    public Account(AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus) {
-        this.accountType = accountType;
-        this.accountNumber = accountNumber;
-        this.accountOwner = accountOwner;
-        this.balance = balance;
-        this.accountStatus = accountStatus;
     }
 
     public Account(int id, AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus, List<Transaction> accountTransactions) {

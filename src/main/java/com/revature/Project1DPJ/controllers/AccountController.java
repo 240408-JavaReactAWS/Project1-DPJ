@@ -35,7 +35,7 @@ public class AccountController {
     public ResponseEntity<Account>createAccount(@RequestBody Account account){
         Account savedAccount=accountService.saveAccount(account);
         if(savedAccount != null ){
-            new ResponseEntity<Account>(savedAccount,HttpStatus.OK);
+          return   new ResponseEntity<Account>(savedAccount,HttpStatus.OK);
 
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
