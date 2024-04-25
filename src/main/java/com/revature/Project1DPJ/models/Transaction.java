@@ -1,40 +1,50 @@
 package com.revature.Project1DPJ.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.revature.Project1DPJ.DTO.UserDTO;
+import jakarta.persistence.*;
 
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name="transactions")
 public class Transaction {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int transactionId;
+    @ManyToOne()
+    @JsonBackReference
+    private Account account;
     @Column(nullable = false)
-    private UserModel sender;
+    private double total;
     @Column(nullable = false)
-    private UserModel reciever;
-    @Column(nullable = false)
-    private double amountSent;
-    @Column(nullable = false)
-    private Date date;
-    @Column(nullable = false)
-    private Time time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+    private java.sql.Date date;
+    @Enumerated(value=EnumType.STRING)
+    private TransactionType transactionType;
 
     public Transaction() {
     }
 
-    public Transaction(int transactionId, UserModel sender, UserModel reciever, double amountSent, Date date, Time time) {
+    public Transaction(int transactionId, Account account, double total, TransactionType transactionType) {
         this.transactionId = transactionId;
-        this.sender = sender;
-        this.reciever = reciever;
-        this.amountSent = amountSent;
+        this.account = account;
+        this.total = total;
+        this.transactionType = transactionType;
+    }
+
+    public Transaction(int transactionId, Account account, double total, java.sql.Date date, TransactionType transactionType) {
+        this.transactionId = transactionId;
+        this.account = account;
+        this.total = total;
         this.date = date;
-        this.time = time;
+        this.transactionType = transactionType;
     }
 
     public int getTransactionId() {
@@ -45,28 +55,20 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    public UserModel getSender() {
-        return sender;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setSender(UserModel sender) {
-        this.sender = sender;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public UserModel getReciever() {
-        return reciever;
+    public double getTotal() {
+        return total;
     }
 
-    public void setReciever(UserModel reciever) {
-        this.reciever = reciever;
-    }
-
-    public double getAmountSent() {
-        return amountSent;
-    }
-
-    public void setAmountSent(double amountSent) {
-        this.amountSent = amountSent;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public Date getDate() {
@@ -77,23 +79,11 @@ public class Transaction {
         this.date = date;
     }
 
-    public Time getTime() {
-        return time;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "transactionId=" + transactionId +
-                ", sender=" + sender +
-                ", reciever=" + reciever +
-                ", amountSent=" + amountSent +
-                ", date=" + date +
-                ", time=" + time +
-                '}';
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 }

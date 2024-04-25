@@ -1,7 +1,12 @@
 package com.revature.Project1DPJ.models;
 
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity // Entity marks this class as one that needs to be created in the database
 @Table(name = "accounts") // Table allows us to set any configuration details about the SQL table that we want
@@ -13,35 +18,56 @@ public class Account {
     private int id;
 
     @Column(name = "account_type", nullable = false)
-    private String accountType;
+    @Enumerated(value=EnumType.STRING)
+    private AccountType accountType;
 
-    @Column(name = "account_number", nullable = false)
-    private String accountNumber;
+    @Column(name="account_number", unique = true)
+    private int accountNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id_fk")
-    @Column(name = "account_Owner_id")
-    private UserModel accountOwnerId;
+    @ManyToOne()
+    @JoinColumn(name="account_owner")
+    private UserModel accountOwner;
 
-    @Column
+    @Column(name="account_balance")
     private double balance;
 
+    @Column(name="account_status")
+    @Enumerated(value=EnumType.STRING)
+    private AccountStatus accountStatus;
 
-    public Account(String accountType, String accountNumber, UserModel accountOwnerId, double balance) {
-        this.accountType = accountType;
-        this.accountNumber = accountNumber;
-        this.accountOwnerId = accountOwnerId;
-        this.balance = balance;
+    @OneToMany(mappedBy = "account")
+    @JsonManagedReference
+    private List<Transaction> accountTransactions;
+
+    public Account() {
     }
 
-    public Account(int id, String accountType, String accountNumber, UserModel accountOwnerId, double balance) {
+    public Account(AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus, List<Transaction> accountTransactions) {
+        this.accountType = accountType;
+        this.accountNumber = accountNumber;
+        this.accountOwner = accountOwner;
+        this.balance = balance;
+        this.accountStatus = accountStatus;
+        this.accountTransactions = accountTransactions;
+    }
+
+    public Account(AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus) {
+        this.accountType = accountType;
+        this.accountNumber = accountNumber;
+        this.accountOwner = accountOwner;
+        this.balance = balance;
+        this.accountStatus = accountStatus;
+    }
+
+    public Account(int id, AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus, List<Transaction> accountTransactions) {
         this.id = id;
         this.accountType = accountType;
         this.accountNumber = accountNumber;
-        this.accountOwnerId = accountOwnerId;
+        this.accountOwner = accountOwner;
         this.balance = balance;
+        this.accountStatus = accountStatus;
+        this.accountTransactions = accountTransactions;
     }
-
 
     public int getId() {
         return id;
@@ -49,30 +75,6 @@ public class Account {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public UserModel getAccountOwner() {
-        return accountOwnerId;
-    }
-
-    public void setAccountOwnerId(UserModel accountOwnerId) {
-        this.accountOwnerId = accountOwnerId;
     }
 
     public double getBalance() {
@@ -83,4 +85,43 @@ public class Account {
         this.balance = balance;
     }
 
+    public UserModel getAccountOwner() {
+        return accountOwner;
+    }
+
+    public void setAccountOwner(UserModel accountOwner) {
+        this.accountOwner = accountOwner;
+    }
+
+    public List<Transaction> getAccountTransactions() {
+        return accountTransactions;
+    }
+
+    public void setAccountTransactions(List<Transaction> accountTransactions) {
+        this.accountTransactions = accountTransactions;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
 }

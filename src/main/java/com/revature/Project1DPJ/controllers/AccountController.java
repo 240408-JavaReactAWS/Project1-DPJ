@@ -5,7 +5,7 @@ import com.revature.Project1DPJ.exceptions.FailedPatchingException;
 import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.services.AccountService;
-import com.revature.Project1DPJ.services.UserService;
+import com.revature.Project1DPJ.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +19,28 @@ public class AccountController {
 
 
     private AccountService accountService;
-    private UserService userService;
+    private UserServices userService;
 
     @Autowired
-    public AccountController(AccountService accountService, UserService userService) {
+    public AccountController(AccountService accountService, UserServices userServices) {
         this.accountService = accountService;
-        this.userService = userService;
+        this.userService = userServices;
     }
 
 
     /*
      * As an admin, I should be able to view all accounts
      */
+    @PostMapping
+    public ResponseEntity<Account>createAccount(@RequestBody Account account){
+        Account savedAccount=accountService.saveAccount(account);
+        if(savedAccount != null ){
+            new ResponseEntity<Account>(savedAccount,HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+    }
     @GetMapping
     public ResponseEntity<List<Account>> viewAllAccounts() {
         List<Account> returnedAccounts;

@@ -4,7 +4,8 @@ import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.repos.AccountDAO;
-import com.revature.Project1DPJ.repos.UserDAO;
+import com.revature.Project1DPJ.repos.TransactionDAO;
+import com.revature.Project1DPJ.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -16,15 +17,26 @@ import java.util.List;
 public class AccountService {
 
     private AccountDAO accountDAO;
-    private UserDAO userDAO;
+    private UserRepository userDAO;
+    private TransactionDAO transactionDAO;
 
     @Autowired
-    public AccountService(AccountDAO accountDAO, UserDAO userDAO) {
+    public AccountService(AccountDAO accountDAO, UserRepository userDAO, TransactionDAO transactionDAO) {
         this.accountDAO = accountDAO;
         this.userDAO = userDAO;
+        this.transactionDAO = transactionDAO;
     }
 
-
+    public Account saveAccount(Account account){
+        int id = account.getAccountOwner().getId();
+        UserModel user = userDAO.getById(id);
+        if(user!=null){
+            user.setId(id);
+            account.setAccountOwner(user);
+            account.setAccountTransactions(transactionDAO.findAllTransactionsByAccount(account.getId()));
+        }
+        return accountDAO.save(account);
+    }
     public List<Account> getAllAccounts() {
         return this.accountDAO.findAll();
     }
@@ -47,24 +59,4 @@ public class AccountService {
         return !this.accountDAO.existsById(id);
     }
 
-
-    public boolean resetUserAccountPassword(int id, String password) {
-        Optional<Account> optionalAccount = this.accountDAO.findById(id);
-        if (optionalAccount.isPresent()) {
-            Account account = optionalAccount.get();
-            UserModel userId = account.getAccountOwner();
-
-            Optional<User> optionalUser = this.userDAO.findById(id);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                user.setPassword(password);
-                this.userDAO.save(user);
-                return this.userDAO.existsById(user.getId());
-            }
-            else {
-                return false;
-            }
-        }
-        return false;
-    }
 }

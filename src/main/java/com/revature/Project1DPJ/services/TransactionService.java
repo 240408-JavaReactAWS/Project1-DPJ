@@ -1,6 +1,8 @@
 package com.revature.Project1DPJ.services;
 
+import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.Transaction;
+import com.revature.Project1DPJ.repos.AccountDAO;
 import com.revature.Project1DPJ.repos.TransactionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
@@ -16,15 +18,25 @@ public class TransactionService {
     @Autowired
     TransactionDAO transactionDAO;
 
+    @Autowired
+    AccountDAO accountDAO;
+
     public TransactionService() {
     }
 
-    public TransactionService(TransactionDAO transactionDAO) {
+    public TransactionService(TransactionDAO transactionDAO, AccountDAO accountDAO) {
         this.transactionDAO = transactionDAO;
+        this.accountDAO = accountDAO;
     }
 
     public Transaction saveTransaction(Transaction transaction){
-        return transactionDAO.save(transaction);
+        int id= transaction.getAccount().getId();
+        Account account= accountDAO.getById(id);
+        if(account!=null){
+            transaction.setAccount(account);
+            return transactionDAO.save(transaction);
+        }
+        return null;
     }
 
     public Optional<Transaction> getTransactionById(int id){
@@ -34,6 +46,10 @@ public class TransactionService {
     //admins only
     public List<Transaction> getAllTransactions(){
         return transactionDAO.findAll();
+    }
+
+    public List<Transaction> getAllTransactionsByAccountId(int id){
+        return transactionDAO.findAllTransactionsByAccount(id);
     }
 //    @Query("from transactions where ")
 //    public List<Transaction>getAllTransactionsForUser(){
