@@ -1,5 +1,6 @@
 package com.revature.Project1DPJ.models;
 
+import com.revature.Project1DPJ.DTO.UserDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 public class UserModel {
 
     @Id
+    @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
@@ -19,25 +21,45 @@ public class UserModel {
     private String email ;
     @Column(nullable = false)
     private String password ;
-    private String role;
-    private boolean userStatus;
+    @Enumerated(value=EnumType.STRING)
+    private UserType role;
+   @Enumerated(value=EnumType.STRING)
+    private UserStatus userStatus;
 
-    @OneToMany
+    @OneToMany(mappedBy = "accountOwner")
     private List<Account> accounts;
-
-
 
     public UserModel() {
     }
 
-    public UserModel(String firstName, String lastName, String email, boolean userStatus, String role, String password) {
+    public UserModel(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userStatus = userStatus;
-        this.role = role;
         this.password = password;
     }
+
+    public UserModel(String firstName, String lastName, String email, String password, UserType role, UserStatus userStatus, List<Account> accounts) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.userStatus = userStatus;
+        this.accounts = accounts;
+    }
+
+    public UserModel(int id, String firstName, String lastName, String email, String password, UserType role, UserStatus userStatus, List<Account> accounts) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.userStatus = userStatus;
+        this.accounts = accounts;
+    }
+
 
     public String getFirstName() {
         return firstName;
@@ -47,12 +69,12 @@ public class UserModel {
         this.firstName = firstName;
     }
 
-    public int getUserId() {
+    public int getId() {
         return id;
     }
 
-    public void setUserId(int userId) {
-        this.id = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLastName() {
@@ -78,19 +100,28 @@ public class UserModel {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getRole() {
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public UserType getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserType role) {
         this.role = role;
     }
 
-    public boolean isUserStatus() {
+    public UserStatus getUserStatus() {
         return userStatus;
     }
 
-    public void setUserStatus(boolean userStatus) {
+    public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
     }
 }

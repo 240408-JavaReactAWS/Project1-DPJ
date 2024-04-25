@@ -1,5 +1,6 @@
 package com.revature.Project1DPJ.controllers;
 
+import com.revature.Project1DPJ.DTO.UserDTO;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("users")
 public class UserController {
     UserServices userServices;
+
+    public UserController() {
+    }
 
     @Autowired
     public UserController(UserServices userServices) {
@@ -20,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserModel> addUser(@RequestBody UserModel model) {
-        UserModel userModel=userServices.saveUser(model);
+    public ResponseEntity<UserDTO> addUser(@RequestBody UserModel model) {
+        UserDTO userModel=userServices.saveUser(model);
         if (userModel != null){
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
         }
@@ -31,8 +35,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserModel> getUserById(@PathVariable int userId) {
-        UserModel userModel=userServices.getUserById(userId);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") int userId) {
+        UserDTO userModel=userServices.getUserById(userId);
         if (userModel != null){
             return new ResponseEntity<>(userModel, HttpStatus.OK);
         }
@@ -42,16 +46,18 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserModel>> getAllUsers(){
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
         return new ResponseEntity<>(userServices.getAllUsers(),HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<UserModel> updateUser(@RequestBody UserModel model){
-        UserModel userModel=userServices.saveUser(model);
-        if (userModel != null){
-            return new ResponseEntity<>(userModel, HttpStatus.CREATED);
+    @PutMapping("{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") int id, @RequestBody UserModel model){
+        if(userServices.getUserById(id)!=null){
+            model.setId(id);
+            UserDTO user = userServices.saveUser(model);
+            return new ResponseEntity<>(user,HttpStatus.OK);
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
