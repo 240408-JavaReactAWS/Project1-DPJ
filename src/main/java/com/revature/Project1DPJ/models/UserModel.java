@@ -1,5 +1,6 @@
 package com.revature.Project1DPJ.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.Project1DPJ.DTO.UserDTO;
 import jakarta.persistence.*;
 
@@ -27,6 +28,7 @@ public class UserModel {
     private UserStatus userStatus;
 
     @OneToMany(mappedBy = "accountOwner")
+    @JsonManagedReference
     private List<Account> accounts;
 
     public UserModel() {
