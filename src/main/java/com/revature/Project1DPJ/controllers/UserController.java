@@ -1,6 +1,8 @@
 package com.revature.Project1DPJ.controllers;
 
 import com.revature.Project1DPJ.DTO.UserDTO;
+import com.revature.Project1DPJ.models.Account;
+import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class UserController {
         this.userServices = userServices;
     }
 
+
     @PostMapping
     public ResponseEntity<UserDTO> addUser(@RequestBody UserModel model) {
         UserDTO userModel=userServices.saveUser(model);
@@ -30,9 +33,8 @@ public class UserController {
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-
     }
+
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") int userId) {
@@ -41,9 +43,22 @@ public class UserController {
             return new ResponseEntity<>(userModel, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-
     }
+
+
+    /*
+     * As an admin, I should be able to lock/unlock a user account
+     */
+    @PatchMapping("/status")
+    public ResponseEntity<Account> userAccountStatus(@RequestBody UserModel user) {
+
+        boolean status = this.userServices.patchUserStatus(user.getId(), user.getUserStatus());
+
+        if (status) return new ResponseEntity<>(HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers(){
@@ -59,7 +74,6 @@ public class UserController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 
 

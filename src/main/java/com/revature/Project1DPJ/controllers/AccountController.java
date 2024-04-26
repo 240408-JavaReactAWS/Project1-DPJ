@@ -3,6 +3,7 @@ package com.revature.Project1DPJ.controllers;
 
 import com.revature.Project1DPJ.exceptions.FailedPatchingException;
 import com.revature.Project1DPJ.models.Account;
+import com.revature.Project1DPJ.models.AccountStatus;
 import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.services.AccountService;
 import com.revature.Project1DPJ.services.UserServices;
@@ -91,26 +92,17 @@ public class AccountController {
 
 
     /*
-     * As an admin, I should be able to lock/unlock a user account
+     * As an admin, I should be able to enable/disable an account
      */
     @PatchMapping("/status")
-    public ResponseEntity<Account> userAccountStatus(@RequestBody User user) {
-        boolean status = user.isAccountStatus();
-        user.setAccountStatus(status);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    public ResponseEntity<Account> updateAccountStatus(@RequestBody Account account) {
 
+        AccountStatus accountStatus = account.getAccountStatus();
+        boolean status = this.accountService.patchAccountStatus(account.getId() ,account.getAccountStatus());
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Account> deleteUserAccount(@PathVariable int id) {
-        boolean isDeleted;
-        try{
-            isDeleted = this.accountService.deleteUserAccountById(id);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (status) return new ResponseEntity<>(HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

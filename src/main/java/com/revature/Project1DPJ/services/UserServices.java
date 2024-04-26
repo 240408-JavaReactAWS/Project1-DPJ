@@ -1,6 +1,7 @@
 package com.revature.Project1DPJ.services;
 
 import com.revature.Project1DPJ.DTO.UserDTO;
+import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.models.UserStatus;
 import com.revature.Project1DPJ.models.UserType;
@@ -25,6 +26,9 @@ public class UserServices {
     public UserServices(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+
+
 
     public UserDTO getUserById(int useId) {
         UserModel user = userRepository.findUserById(useId);
@@ -92,6 +96,18 @@ public class UserServices {
         if (optionalUser.isPresent()) {
             UserModel user = optionalUser.get();
             user.setPassword(password);
+            this.userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean patchUserStatus(int id, UserStatus userStatus) {
+        Optional<UserModel> optionalUser = this.userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            UserModel user = optionalUser.get();
+            user.setUserStatus(userStatus);
             this.userRepository.save(user);
             return true;
         }
