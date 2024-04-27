@@ -1,7 +1,6 @@
 package com.revature.Project1DPJ.services;
 
 import com.revature.Project1DPJ.models.Account;
-import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.repos.AccountDAO;
 import com.revature.Project1DPJ.repos.TransactionDAO;
@@ -31,7 +30,7 @@ public class AccountService {
         int id = account.getAccountOwner().getId();
         UserModel user = userDAO.getById(id);
         if(user!=null){
-            user.setId(id);
+//            user.setId(id);
             account.setAccountOwner(user);
             account.setAccountTransactions(transactionDAO.findAllTransactionsByAccount(account.getId()));
         }
@@ -47,6 +46,10 @@ public class AccountService {
         return optionalAccount.orElse(null);
     }
 
+    public Optional<Account> findAccountByAccountNumber(int accountNumber){
+        Optional<Account> foundAccount= Optional.ofNullable(accountDAO.findAccountByAccountNumber(accountNumber));
+        return foundAccount;
+    }
 
 
     public boolean deleteUserAccountById(int id) {

@@ -1,6 +1,8 @@
 package com.revature.Project1DPJ.controllers;
 
+import com.revature.Project1DPJ.DTO.TransactionDTO;
 import com.revature.Project1DPJ.models.Transaction;
+import com.revature.Project1DPJ.models.TransactionType;
 import com.revature.Project1DPJ.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +30,13 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> saveTransaction(@RequestBody Transaction transaction){
-        Transaction savedTransaction = transactionService.saveTransaction(transaction);
+    public ResponseEntity<TransactionDTO> saveTransaction(@RequestBody TransactionDTO transaction){
+        TransactionDTO savedTransaction;
+        if(transaction.getType().equals(TransactionType.DEPOSIT) || transaction.getType().equals(TransactionType.WITHDRAWAL)){
+            savedTransaction = transactionService.saveTransactionWD(transaction);
+        }else{
+            savedTransaction = transactionService.saveTransactionSR(transaction);
+        }
         if(savedTransaction != null){
             return new ResponseEntity<>(savedTransaction,OK);
         }
@@ -51,13 +58,13 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.getAllTransactions(),OK);
     }
 
-//    @GetMapping("user/{id}")
-//    public ResponseEntity<List<Transaction>> getAllTransactionsByUserID(@PathVariable("id") int id){
-//      Optional<List<Transactions>> usersTransactions = transactionService.getAllTransactionsByUserId(id);
-//      if(foundTransaction.isPresent()){
-//          return new ResponseEntity<>(usersTranasactions.get(), OK);
-//        }
-//       return new ResponseEntity<>(NOT_FOUND);
-//    }
+    @GetMapping("user/{id}")
+    public ResponseEntity<List<Transaction>> getAllTransactionsByUserID(@PathVariable("id") int id){
+        List<Transaction> usersTransactions = (transactionService.getAllTransactionsByAccountId(id));
+        if(usersTransactions != null){
+          return new ResponseEntity<>(usersTransactions, OK);
+        }
+       return new ResponseEntity<>(NOT_FOUND);
+    }
 
 }

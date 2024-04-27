@@ -1,13 +1,8 @@
 package com.revature.Project1DPJ.services;
 
-import com.revature.Project1DPJ.models.Account;
-import com.revature.Project1DPJ.models.User;
-import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.repos.AdminDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AdminService {
