@@ -3,7 +3,6 @@ package com.revature.Project1DPJ.controllers;
 
 import com.revature.Project1DPJ.exceptions.FailedPatchingException;
 import com.revature.Project1DPJ.models.Account;
-import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.services.AccountService;
 import com.revature.Project1DPJ.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,32 +72,32 @@ public class AccountController {
     /*
      * As an admin, I should be able to reset a user password account
      */
-    @PatchMapping("/{id}")
-    public ResponseEntity<Account> resetUserAccountPassword(@PathVariable int id, @RequestBody User user) {
-
-        String password = user.getPassword();
-        boolean updated;
-        try {
-            updated = this.userService.patchUserAccountPassword(id, password);
-            if (updated) throw new FailedPatchingException("Failed to reset the user account password");
-        }
-        catch(FailedPatchingException e) {
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
-    /*
-     * As an admin, I should be able to lock/unlock a user account
-     */
-    @PatchMapping("/status")
-    public ResponseEntity<Account> userAccountStatus(@RequestBody User user) {
-        boolean status = user.isAccountStatus();
-        user.setAccountStatus(status);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PatchMapping("/{id}")
+//    public ResponseEntity<Account> resetUserAccountPassword(@PathVariable int id, @RequestBody User user) {
+//
+//        String password = user.getPassword();
+//        boolean updated;
+//        try {
+//            updated = this.userService.patchUserAccountPassword(id, password);
+//            if (updated) throw new FailedPatchingException("Failed to reset the user account password");
+//        }
+//        catch(FailedPatchingException e) {
+//            System.out.println(e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
+//
+//
+//    /*
+//     * As an admin, I should be able to lock/unlock a user account
+//     */
+//    @PatchMapping("/status")
+//    public ResponseEntity<Account> userAccountStatus(@RequestBody User user) {
+//        boolean status = user.isAccountStatus();
+//        user.setAccountStatus(status);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 
     @DeleteMapping("/{id}")
