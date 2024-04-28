@@ -94,6 +94,10 @@ public class Account {
         this.accountOwner = accountOwner;
     }
 
+    public void addTransaction(Transaction transaction){
+        this.accountTransactions.add(transaction);
+    }
+
     public List<Transaction> getAccountTransactions() {
         return accountTransactions;
     }

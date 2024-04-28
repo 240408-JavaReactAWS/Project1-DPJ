@@ -2,6 +2,7 @@ package com.revature.Project1DPJ.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.Project1DPJ.DTO.UserDTO;
+import com.revature.Project1DPJ.exceptions.AccountException;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -32,6 +33,10 @@ public class UserModel {
     private List<Account> accounts;
 
     public UserModel() {
+    }
+
+    public UserModel(int id) {
+        this.id = id;
     }
 
     public UserModel(String firstName, String lastName, String email, String password) {
@@ -109,6 +114,34 @@ public class UserModel {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public Account getAccount(AccountType type){
+        if(type.equals(AccountType.CHECKING)){
+            for(Account acct: this.accounts){
+                if(acct.getAccountType().equals(type)){
+                    return acct;
+                }
+            }
+        throw new AccountException("Checking account does not exist");
+        }else if(type.equals(AccountType.SAVINGS)){
+            for(Account acct: this.accounts){
+                if(acct.getAccountType().equals(type)){
+                    return acct;
+                }
+            }
+            throw new AccountException("Savings account does not exist");
+        }
+        throw new AccountException("Accounts does not exist");
+    }
+
+    public Account getSavingsAccount(AccountType type){
+        for(Account acct: this.accounts){
+            if(acct.getAccountType().equals(type)){
+                return acct;
+            }
+        }
+        throw new AccountException("Savings account does not exist");
     }
 
     public UserType getRole() {

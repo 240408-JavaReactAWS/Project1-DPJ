@@ -15,6 +15,9 @@ import java.text.SimpleDateFormat;
 @Table(name="transactions")
 public class Transaction {
 
+    //    @GeneratedValue( generator ="uuid2" )
+//    @GenericGenerator(name="uuid2" ,strategy="org.hibernate.id.UUIDGenerator")
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int transactionId;
@@ -26,10 +29,18 @@ public class Transaction {
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private java.sql.Date date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="HH:MM")
+    private Time time;
     @Enumerated(value=EnumType.STRING)
     private TransactionType transactionType;
 
     public Transaction() {
+    }
+
+    public Transaction(Account account, double total, TransactionType transactionType) {
+        this.account = account;
+        this.total = total;
+        this.transactionType = transactionType;
     }
 
     public Transaction(int transactionId, Account account, double total, TransactionType transactionType) {
@@ -39,12 +50,14 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public Transaction(int transactionId, Account account, double total, java.sql.Date date, TransactionType transactionType) {
+    public Transaction(int transactionId, Account account, double total, java.sql.Date date, Time time, TransactionType transactionType) {
         this.transactionId = transactionId;
         this.account = account;
         this.total = total;
         this.date = date;
+        this.time = time;
         this.transactionType = transactionType;
+
     }
 
     public int getTransactionId() {
@@ -77,6 +90,14 @@ public class Transaction {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
     }
 
     public TransactionType getTransactionType() {
