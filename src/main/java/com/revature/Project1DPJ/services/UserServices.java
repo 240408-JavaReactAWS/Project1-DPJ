@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServices {
@@ -82,6 +83,12 @@ public class UserServices {
     public List<UserDTO> getAllUsers(){
         List<UserDTO>allUsersDTO=new ArrayList<>();
         List<UserModel>allUsers=userRepository.findAll();
+        // this code returns all users with role = USER
+        UserType type = UserType.USER;
+        allUsers = allUsers.stream()
+                .filter((user) -> user.getRole() == type)
+                .toList();
+        //
         if(!allUsers.isEmpty()) {
             for (UserModel user : allUsers) {
                 allUsersDTO.add(this.mapUserToUserDTO(user));

@@ -1,10 +1,9 @@
 package com.revature.Project1DPJ.controllers;
 
-
 import com.revature.Project1DPJ.exceptions.FailedPatchingException;
 import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.AccountStatus;
-import com.revature.Project1DPJ.models.User;
+import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.services.AccountService;
 import com.revature.Project1DPJ.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class AccountController {
 
 
-    private AccountService accountService;
-    private UserServices userService;
+    private final AccountService accountService;
+    private final UserServices userService;
 
     @Autowired
     public AccountController(AccountService accountService, UserServices userServices) {
@@ -30,7 +30,7 @@ public class AccountController {
 
 
     /*
-     * As an admin, I should be able to view all accounts
+     * As an admin, I should be able to create an account
      */
     @PostMapping
     public ResponseEntity<Account>createAccount(@RequestBody Account account){
@@ -40,8 +40,12 @@ public class AccountController {
 
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
     }
+
+
+    /*
+     * As an admin, I should be able to view all accounts
+     */
     @GetMapping
     public ResponseEntity<List<Account>> viewAllAccounts() {
         List<Account> returnedAccounts;
@@ -75,7 +79,7 @@ public class AccountController {
      * As an admin, I should be able to reset a user password account
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Account> resetUserAccountPassword(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<Account> resetUserAccountPassword(@PathVariable int id, @RequestBody UserModel user) {
 
         String password = user.getPassword();
         boolean updated;
@@ -90,20 +94,6 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-    /*
-     * As an admin, I should be able to enable/disable an account
-     */
-    @PatchMapping("/status")
-    public ResponseEntity<Account> updateAccountStatus(@RequestBody Account account) {
-
-        AccountStatus accountStatus = account.getAccountStatus();
-        boolean status = this.accountService.patchAccountStatus(account.getId() ,account.getAccountStatus());
-
-        if (status) return new ResponseEntity<>(HttpStatus.OK);
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
 
 
 

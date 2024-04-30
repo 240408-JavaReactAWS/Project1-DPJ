@@ -17,6 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/transactions")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class TransactionController {
 
     @Autowired

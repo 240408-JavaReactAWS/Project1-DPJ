@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdminDAO extends JpaRepository<Admin, Integer> {
 
-    @Query("FROM Admin WHERE username = :usernameVar AND password = :passwordVar")
-    Admin findByUsernameAndPassword(@Param("usernameVar") String username, @Param("passwordVar") String password);
+    @Query("FROM Admin WHERE email = :emailVar AND password = :passwordVar")
+    Admin findByUsernameAndPassword(@Param("emailVar") String email, @Param("passwordVar") String password);
 }

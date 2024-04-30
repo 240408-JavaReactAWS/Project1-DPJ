@@ -2,7 +2,6 @@ package com.revature.Project1DPJ.services;
 
 import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.AccountStatus;
-import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.repos.AccountDAO;
 import com.revature.Project1DPJ.repos.TransactionDAO;

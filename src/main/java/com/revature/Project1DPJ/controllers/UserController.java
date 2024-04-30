@@ -2,7 +2,6 @@ package com.revature.Project1DPJ.controllers;
 
 import com.revature.Project1DPJ.DTO.UserDTO;
 import com.revature.Project1DPJ.models.Account;
-import com.revature.Project1DPJ.models.User;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class UserController {
     UserServices userServices;
 
@@ -46,24 +46,6 @@ public class UserController {
     }
 
 
-    /*
-     * As an admin, I should be able to lock/unlock a user account
-     */
-    @PatchMapping("/status")
-    public ResponseEntity<Account> userAccountStatus(@RequestBody UserModel user) {
-
-        boolean status = this.userServices.patchUserStatus(user.getId(), user.getUserStatus());
-
-        if (status) return new ResponseEntity<>(HttpStatus.OK);
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        return new ResponseEntity<>(userServices.getAllUsers(),HttpStatus.OK);
-    }
 
     @PutMapping("{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("id") int id, @RequestBody UserModel model){
@@ -72,7 +54,6 @@ public class UserController {
             UserDTO user = userServices.saveUser(model);
             return new ResponseEntity<>(user,HttpStatus.OK);
         }
-
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
