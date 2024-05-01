@@ -34,6 +34,23 @@ public class AdminController {
         this.accountService = accountService;
     }
 
+
+    /*
+     * As an admin, I should be able to view all accounts
+     */
+    @GetMapping("/accounts")
+    public ResponseEntity<List<Account>> viewAllAccounts() {
+        List<Account> returnedAccounts;
+        try {
+            returnedAccounts = this.accountService.getAllAccounts();
+        }
+        catch (Exception e) {
+            return new ResponseEntity<List<Account>>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<List<Account>>(returnedAccounts, HttpStatus.OK);
+    }
+
+
     /*
      * As an admin, I should be able to create my account
      */
@@ -46,6 +63,9 @@ public class AdminController {
     }
 
 
+    /*
+    * As an admin, I should be able to view all users/customers
+    * */
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers(){
         return new ResponseEntity<>(userServices.getAllUsers(),HttpStatus.OK);
@@ -92,8 +112,8 @@ public class AdminController {
     /*
      * As an admin, I should be able to lock/unlock a user account
      */
-    @PatchMapping("/account/status/{id}")
-    public ResponseEntity<Account> userAccountStatus(@PathVariable int id, @RequestBody UserModel user) {
+    @PatchMapping("/user/status/{id}")
+    public ResponseEntity<UserModel> userAccountStatus(@PathVariable int id, @RequestBody UserModel user) {
 
         boolean status = this.userServices.patchUserStatus(id, user.getUserStatus());
 
@@ -106,7 +126,7 @@ public class AdminController {
     /*
      * As an admin, I should be able to enable/disable an account
      */
-    @PatchMapping("/status")
+    @PatchMapping("/account/status")
     public ResponseEntity<Account> updateAccountStatus(@RequestBody Account account) {
 
         AccountStatus accountStatus = account.getAccountStatus();

@@ -44,22 +44,6 @@ public class AccountController {
 
 
     /*
-     * As an admin, I should be able to view all accounts
-     */
-    @GetMapping
-    public ResponseEntity<List<Account>> viewAllAccounts() {
-        List<Account> returnedAccounts;
-
-        try {
-            returnedAccounts = this.accountService.getAllAccounts();
-        }
-        catch (Exception e) {
-            return new ResponseEntity<List<Account>>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<List<Account>>(returnedAccounts, HttpStatus.OK);
-    }
-
-    /*
      * As an admin, I should be able to view a user account
      */
     @GetMapping("/{id}")

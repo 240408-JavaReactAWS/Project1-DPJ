@@ -12,13 +12,13 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String email ;
 
     @Column(nullable = false)
