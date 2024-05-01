@@ -19,17 +19,19 @@ public class Admin {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    @Enumerated(value=EnumType.STRING)
+    private UserType role;
 
+    public Admin() {}
 
-    public Admin(String username, String password, String role) {
+    public Admin(String username, String password, UserType role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
 
-    public Admin(int id, String username, String password, String role) {
+    public Admin(int id, String username, String password, UserType role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -61,11 +63,11 @@ public class Admin {
         this.password = password;
     }
 
-    public String getRole() {
+    public UserType getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserType role) {
         this.role = role;
     }
 }
