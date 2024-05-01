@@ -1,10 +1,9 @@
 package com.revature.Project1DPJ.services;
 
 import com.revature.Project1DPJ.DTO.UserDTO;
-import com.revature.Project1DPJ.models.UserModel;
-import com.revature.Project1DPJ.models.UserStatus;
-import com.revature.Project1DPJ.models.UserType;
+import com.revature.Project1DPJ.models.*;
 import com.revature.Project1DPJ.repos.UserRepository;
+import com.revature.Project1DPJ.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +27,13 @@ public class UserServices {
 
     public UserDTO getUserById(int useId) {
         UserModel user = userRepository.findUserById(useId);
-        return this.mapUserToUserDTO(user);
+        return UserUtil.mapUserToUserDTO(user);
 
     }
 
     public UserDTO getUserByUsername(String firstName) {
         UserModel model = userRepository.findUserByFirstName(firstName);
-        return this.mapUserToUserDTO(model);
+        return UserUtil.mapUserToUserDTO(model);
     }
 
     public UserDTO saveUser(UserModel user) {
@@ -44,7 +43,10 @@ public class UserServices {
             user.setUserStatus(UserStatus.UNLOCKED);
             user.setRole(UserType.USER);
             UserModel model = userRepository.save(user);
-            return this.mapUserToUserDTO(model);
+            Account checkingAccount=new Account(AccountType.CHECKING,model,0);
+            Account savingAccount=new Account(AccountType.SAVINGS,model,0);
+            user.setAccounts(List.of());
+            return UserUtil.mapUserToUserDTO(model);
         }else{
             if(!foundUser.getFirstName().equals(user.getFirstName())){
                 foundUser.setFirstName(user.getFirstName());
@@ -60,17 +62,17 @@ public class UserServices {
                 foundUser.setPassword(user.getPassword());
             }
             UserModel model=userRepository.save(foundUser);
-            return this.mapUserToUserDTO(model);
+            return UserUtil.mapUserToUserDTO(model);
 
         }
 //        return null;
 
     }
 
-    public UserDTO getUserByEmail(String email){
+    public UserModel getUserByEmail(String email){
         UserModel model = userRepository.findUserByEmail(email);
         if(model != null){
-            return this.mapUserToUserDTO(model);
+            return model;
         }
         return null;
     }
@@ -80,7 +82,7 @@ public class UserServices {
         List<UserModel>allUsers=userRepository.findAll();
         if(!allUsers.isEmpty()) {
             for (UserModel user : allUsers) {
-                allUsersDTO.add(this.mapUserToUserDTO(user));
+                allUsersDTO.add(UserUtil.mapUserToUserDTO(user));
             }
         }
         return allUsersDTO;
@@ -98,11 +100,7 @@ public class UserServices {
         return false;
     }
 
-    public  UserModel mapUserDTOToUser(UserDTO user){
+    public UserModel mapUserDTOToUser(UserDTO user){
         return userRepository.findUserByEmail(user.getEmail());
-    }
-
-    public UserDTO mapUserToUserDTO(UserModel user){
-        return new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail());
     }
 }

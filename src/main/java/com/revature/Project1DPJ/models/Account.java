@@ -36,11 +36,17 @@ public class Account {
     @Enumerated(value=EnumType.STRING)
     private AccountStatus accountStatus;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Transaction> accountTransactions;
 
     public Account() {
+    }
+
+    public Account(AccountType accountType, UserModel accountOwner, double balance) {
+        this.accountType = accountType;
+        this.accountOwner = accountOwner;
+        this.balance = balance;
     }
 
     public Account(AccountType accountType, int accountNumber, UserModel accountOwner, double balance, AccountStatus accountStatus) {
