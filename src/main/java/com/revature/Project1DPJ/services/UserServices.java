@@ -121,6 +121,16 @@ public class UserServices {
         return false;
     }
 
+
+    public UserDTO findByEmailAndPassword(String email, String password) {
+
+        UserModel userModel = this.userRepository.findByEmailAndPassword(email, password);
+        if (userModel == null) return null;
+        if (userModel.getUserStatus() == UserStatus.LOCKED) return null;
+
+        return mapUserToUserDTO(userModel);
+    }
+
     public  UserModel mapUserDTOToUser(UserDTO user){
         return userRepository.findUserByEmail(user.getEmail());
     }

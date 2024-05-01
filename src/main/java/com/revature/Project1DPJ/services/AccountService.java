@@ -55,14 +55,16 @@ public class AccountService {
 
 
     public boolean patchAccountStatus (int id, AccountStatus accountStatus) {
-        Optional<Account> optionalAccount =  this.accountDAO.findById(id);
-        if (optionalAccount.isPresent()) {
-            Account account = optionalAccount.get();
+        List<Integer> ids = List.of(id);
+        List<Account> accounts =  this.accountDAO.findAllById(ids);
+
+        if (accounts.isEmpty()) return false;
+
+        for (Account account : accounts) {
             account.setAccountStatus(accountStatus);
-            this.accountDAO.save(account);
-            return true;
         }
-        return false;
+        this.accountDAO.saveAll(accounts);
+        return true;
     }
 
 //    public int deleteUserAccountById(int id) {

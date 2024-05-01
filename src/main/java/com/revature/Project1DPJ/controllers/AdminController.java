@@ -128,9 +128,9 @@ public class AdminController {
      */
     @PatchMapping("/account/status")
     public ResponseEntity<Account> updateAccountStatus(@RequestBody Account account) {
-
+        int accountOwnerId = account.getAccountOwner().getId();
         AccountStatus accountStatus = account.getAccountStatus();
-        boolean status = this.accountService.patchAccountStatus(account.getId() ,account.getAccountStatus());
+        boolean status = this.accountService.patchAccountStatus(accountOwnerId ,account.getAccountStatus());
 
         if (status) return new ResponseEntity<>(HttpStatus.OK);
 

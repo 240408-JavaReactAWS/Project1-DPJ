@@ -3,6 +3,7 @@ package com.revature.Project1DPJ.controllers;
 import com.revature.Project1DPJ.DTO.UserDTO;
 import com.revature.Project1DPJ.models.Account;
 import com.revature.Project1DPJ.models.UserModel;
+import com.revature.Project1DPJ.models.UserStatus;
 import com.revature.Project1DPJ.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,19 @@ public class UserController {
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    /*
+     * As a user, I should be able to log in into my account
+     */
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> loginUser(@RequestBody UserModel model) {
+
+        UserDTO userModel = userServices.findByEmailAndPassword(model.getEmail(), model.getPassword());
+
+        if(userModel != null) return new ResponseEntity<>(userModel, HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 
