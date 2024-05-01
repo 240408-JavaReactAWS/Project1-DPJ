@@ -1,10 +1,11 @@
 package com.revature.Project1DPJ.controllers;
 
+import com.revature.Project1DPJ.DTO.SRDTO;
 import com.revature.Project1DPJ.DTO.UserDTO;
-import com.revature.Project1DPJ.models.Account;
-import com.revature.Project1DPJ.models.User;
+import com.revature.Project1DPJ.models.AccountType;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.services.UserServices;
+import com.revature.Project1DPJ.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="http://localhost:3000")
 @RequestMapping("users")
 public class UserController {
     UserServices userServices;
@@ -25,7 +27,6 @@ public class UserController {
         this.userServices = userServices;
     }
 
-
     @PostMapping
     public ResponseEntity<UserDTO> addUser(@RequestBody UserModel model) {
         UserDTO userModel=userServices.saveUser(model);
@@ -33,8 +34,9 @@ public class UserController {
             return new ResponseEntity<>(userModel, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 
+
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") int userId) {
@@ -43,22 +45,26 @@ public class UserController {
             return new ResponseEntity<>(userModel, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
     }
+    @GetMapping("user")
+    public ResponseEntity<SRDTO> getUserByEmail(@RequestParam(value="email") String email, boolean userToUser) {
+        UserModel userModel=userServices.getUserByEmail(email);
+        if (userModel != null){
+
+            int checkingAccountNumber=userModel.getAccount(AccountType.valueOf("CHECKING")).getAccountNumber();
+            int savingsAccountNumber=userModel.getAccount(AccountType.valueOf("SAVINGS")).getAccountNumber();
+            UserDTO userDTO=UserUtil.mapUserToUserDTO(userModel);
+            SRDTO sr;
+            if(userToUser){sr= UserUtil.mapUserDTOToSRDTO(userDTO, checkingAccountNumber,savingsAccountNumber);}
+            else{sr= UserUtil.mapUserDTOToSRDTO(userDTO, checkingAccountNumber);}
+            return new ResponseEntity<>(sr, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 
-    /*
-     * As an admin, I should be able to lock/unlock a user account
-     */
-    @PatchMapping("/status")
-    public ResponseEntity<Account> userAccountStatus(@RequestBody UserModel user) {
-
-        boolean status = this.userServices.patchUserStatus(user.getId(), user.getUserStatus());
-
-        if (status) return new ResponseEntity<>(HttpStatus.OK);
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers(){
@@ -74,6 +80,7 @@ public class UserController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
 

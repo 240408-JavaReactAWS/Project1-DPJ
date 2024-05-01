@@ -2,14 +2,10 @@ package com.revature.Project1DPJ.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.revature.Project1DPJ.DTO.UserDTO;
 import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name="transactions")
@@ -20,7 +16,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int transactionId;
+    private int id;
     @ManyToOne()
     @JsonBackReference
     private Account account;
@@ -33,6 +29,11 @@ public class Transaction {
     private Time time;
     @Enumerated(value=EnumType.STRING)
     private TransactionType transactionType;
+    @Column(nullable = true)
+    private int sr;
+    @Column(nullable = true)
+    private int sra;
+
 
     public Transaction() {
     }
@@ -43,15 +44,15 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public Transaction(int transactionId, Account account, double total, TransactionType transactionType) {
-        this.transactionId = transactionId;
+    public Transaction(int id, Account account, double total, TransactionType transactionType) {
+        this.id = id;
         this.account = account;
         this.total = total;
         this.transactionType = transactionType;
     }
 
-    public Transaction(int transactionId, Account account, double total, java.sql.Date date, Time time, TransactionType transactionType) {
-        this.transactionId = transactionId;
+    public Transaction(int id, Account account, double total, java.sql.Date date, Time time, TransactionType transactionType) {
+        this.id = id;
         this.account = account;
         this.total = total;
         this.date = date;
@@ -60,12 +61,23 @@ public class Transaction {
 
     }
 
-    public int getTransactionId() {
-        return transactionId;
+    public Transaction(int id, Account account, double total, Date date, Time time, TransactionType transactionType, int sr, int sra) {
+        this.id = id;
+        this.account = account;
+        this.total = total;
+        this.date = date;
+        this.time = time;
+        this.transactionType = transactionType;
+        this.sr = sr;
+        this.sra=sra;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Account getAccount() {
@@ -106,5 +118,21 @@ public class Transaction {
 
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public int getSr() {
+        return sr;
+    }
+
+    public void setSr(int sr) {
+        this.sr = sr;
+    }
+
+    public int getSra() {
+        return sra;
+    }
+
+    public void setSra(int sra) {
+        this.sra = sra;
     }
 }

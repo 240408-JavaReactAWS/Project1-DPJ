@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.Project1DPJ.DTO.UserDTO;
 import com.revature.Project1DPJ.exceptions.AccountException;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 
@@ -28,7 +29,8 @@ public class UserModel {
    @Enumerated(value=EnumType.STRING)
     private UserStatus userStatus;
 
-    @OneToMany(mappedBy = "accountOwner")
+    @OneToMany(mappedBy = "accountOwner", cascade = CascadeType.ALL)
+
     @JsonManagedReference
     private List<Account> accounts;
 
@@ -39,21 +41,23 @@ public class UserModel {
         this.id = id;
     }
 
-    public UserModel(String firstName, String lastName, String email, String password) {
+    public UserModel(int id, String firstName, String lastName, String email, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role=UserType.USER;
+        this.userStatus=UserStatus.UNLOCKED;
     }
 
-    public UserModel(String firstName, String lastName, String email, String password, UserType role, UserStatus userStatus, List<Account> accounts) {
+    public UserModel(int id, String firstName, String lastName, String email, UserType role, UserStatus userStatus) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
         this.role = role;
         this.userStatus = userStatus;
-        this.accounts = accounts;
     }
 
     public UserModel(int id, String firstName, String lastName, String email, String password, UserType role, UserStatus userStatus, List<Account> accounts) {
@@ -66,7 +70,6 @@ public class UserModel {
         this.userStatus = userStatus;
         this.accounts = accounts;
     }
-
 
     public String getFirstName() {
         return firstName;
