@@ -1,14 +1,17 @@
 package com.revature.Project1DPJ.services;
 
+import com.revature.Project1DPJ.DTO.LoginDTO;
 import com.revature.Project1DPJ.DTO.UserDTO;
 import com.revature.Project1DPJ.models.UserModel;
 import com.revature.Project1DPJ.models.UserStatus;
 import com.revature.Project1DPJ.models.UserType;
 import com.revature.Project1DPJ.repos.UserRepository;
+import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +70,7 @@ public class UserServices {
 
     }
 
+
     public UserDTO getUserByEmail(String email){
         UserModel model = userRepository.findUserByEmail(email);
         if(model != null){
@@ -74,6 +78,15 @@ public class UserServices {
         }
         return null;
     }
+    public LoginDTO loginUser(String email,String password){
+        UserModel model = userRepository.findUserByEmail(email);
+        if(model != null && model.getPassword().equals(password)){
+            return new LoginDTO(model.getEmail(),model.getPassword());
+        }
+        return null;
+    }
+
+
 
     public List<UserDTO> getAllUsers(){
         List<UserDTO>allUsersDTO=new ArrayList<>();
