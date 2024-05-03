@@ -2,8 +2,8 @@ package com.revature.Project1DPJ.models;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "users")
+//@Entity
+//@Table(name = "users")
 public class User {
 
     @Id

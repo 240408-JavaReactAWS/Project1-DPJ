@@ -1,27 +1,25 @@
 package com.revature.Project1DPJ.DTO;
 
 
+import com.revature.Project1DPJ.models.Account;
+import com.revature.Project1DPJ.models.UserModel;
 import jakarta.persistence.Column;
 
+import java.util.List;
+
+
 public class UserDTO {
+    private String firstName;
+    private String lastName;
+    private String email;
 
+    public UserDTO() {
+    }
 
-    private String firstName ;
-
-    private String lastName ;
-
-    public UserDTO(String firstName, String email, String lastName) {
+    public UserDTO(String firstName, String lastName, String email) {
         this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
-        this.lastName = lastName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -32,6 +30,14 @@ public class UserDTO {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -39,7 +45,4 @@ public class UserDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    private String email ;
-
 }
